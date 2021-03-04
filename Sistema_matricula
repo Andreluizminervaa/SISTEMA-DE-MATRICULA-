@@ -1,0 +1,193 @@
+#include <iostream>
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+using namespace std;
+
+struct no{
+	string info;
+	int matric, idade;
+	string nome, dn,dm,serie;
+	struct no * prx;
+};
+
+struct no * ant = NULL;
+struct no * pont = NULL;
+
+struct no * ptlista = new struct no; // cria lista vazia parte 1
+
+
+int busca_enc(int x){
+	
+	cout << "\n\n";	
+	ant = ptlista;
+	pont = NULL; 
+	struct no * ptr = ptlista->prx;
+	while(ptr!=NULL){
+		if(ptr->matric < x){
+			ant = ptr;
+			ptr=ptr->prx;
+		}else{
+			if(ptr->matric == x){
+				pont = ptr;
+				ptr = NULL;
+			}
+		}
+	}
+}	
+    // matric, nome , idade, dn,dm,serie  
+int insere_enc(int mat, string name, int yo, string daten, string datem, string ser){
+		cout << "\n\n";	
+		busca_enc(mat);
+		if(pont == NULL){
+			struct no * pt = new struct no;
+			pt->matric = mat;
+			pt->nome = name;
+			pt->idade = yo;
+			pt->dn = daten;
+			pt->dm = datem;
+			pt->serie = ser;
+			pt->prx=ant->prx;
+			ant->prx=pt;
+		}else{
+			cout << "Chave Duplicada, tente inserir outro valor!" << endl;
+		}
+}
+alterar_enc (int x){
+	setbuf(stdin,NULL);
+	int num,var_idade,ser;
+	string name, dt_nas, dtm;
+		busca_enc(x);
+		if(pont != NULL){
+		
+			cout << "  1 - Alterar nome" << "\n" << "  2 - Alterar idade" << "\n"<< "  3 - Alterar data de nascimento" << "\n" << "  4 - Alterar data de matrícula" << "\n" << "  5 - Alterar série " << "\n\n";
+			cout << "Informe a opção que você deseja alterar: ";
+			cin >> num;
+			if(num == 1){
+			cout << "Informe o nome completo: " << endl;
+			cin.ignore();
+			getline(cin,name);
+			pont->nome = name;
+ 			}else{
+				if(num==2){
+					cout << "Informe a idade: ";
+					cin >> var_idade;
+					pont->idade = var_idade;
+				}else{
+					if(num==3){
+						cout << "Informe a data de nascimento: ";
+						cin >> dt_nas;
+						pont->dn = dt_nas;
+					}else{
+						if(num==4){
+							cout << "Informe a data da matrícula: ";
+							cin >> dtm;
+							pont->dm = dtm;
+						}else{
+							if(num==5){
+								cout << "Informe a série: ";
+								cin >> ser;
+								pont->serie = ser;
+							}
+						}
+					}
+				}
+			}
+		}else{
+			cout << "Matrícula informada não existe!" << endl;
+		}	
+}
+int remove_enc (int x){
+	if(pont != NULL){
+		ant->prx = pont->prx;
+		pont->prx = NULL;
+	}else{
+		cout << "Valor informado não existe na lista!" << endl;
+	}
+}
+ // matric, nome , idade, dn,dm,serie
+int mostrard_enc(int x){
+		busca_enc(x);
+		if(pont != NULL){
+			cout << "Matrícula.........:  " << pont->matric << endl;
+			cout << "Nome..............:  " << pont->nome << endl;
+			cout << "Idade.............:  " << pont->idade << endl;
+			cout << "Data de Nascimento:  " << pont->dn << endl;
+			cout << "Data de Matrícula.:  " << pont->dm << endl;
+			cout << "Série.............:  " << pont->serie << endl;
+		}else{
+			cout << "A matrícula informada não existe!";
+		}
+}
+int main(){
+	
+	ptlista->prx = NULL; // Cria lista vazia parte 2
+	setlocale(LC_ALL, "Portuguese"); 
+	int opc;
+	int matric, idade;
+	string dn, serie, dm,nome;
+	
+	while(opc!=6){
+		cout << "\n\n\n\n\n\n";
+	cout << "-------------------------------- Bem vindo ao colégio do fessor Raimundão !! --------------------------------------" << "\n\n\n";
+	
+	
+	cout << "1 - Buscar" << "\n" << "2 - Matricular" << "\n" << "3 - Remover" << "\n" << "4 - Mostrar dados aluno" << "\n" <<"5 - Alterar" << "\n" << "6 - Finalizar" << "\n\n";
+    cout << "Informe a operação que deseja: ";
+    cin >> opc;
+    cout << "\n\n";
+    if(opc == 6){
+    	cout << "Fim do programa, muito obrigado por utilizá-lo!";
+	}else{
+	
+    
+    cout << "\n";
+    cout << "-----------------------------------------" << "\n\n";
+	
+		setbuf(stdin,NULL);
+		
+			if(opc==1){
+				cout << "Informe o número da chave a ser buscada: ";
+				cin >> matric;
+				busca_enc(matric);
+			}else{
+					if(opc==2){
+						cout << "Informe a matrícula do aluno: ";
+						cin >> matric;
+					cout << "Informe o nome completo do aluno: ";
+						 cin.ignore();
+						getline(cin,nome);
+					cout << "Informe a idade do aluno: ";
+						cin >> idade;
+					cout << "Informe a data de nascimento do aluno: ";
+						cin >> dn;
+					cout << "Informe a data da matrícula: ";
+						cin >> dm;
+					cout << "infome a série na qual o aluno está sendo matrículado: ";
+						cin.ignore();
+						getline(cin,serie);
+			
+					insere_enc(matric, nome , idade, dn,dm,serie);
+					cout << "\n\n";
+					}else{
+						if(opc==3){
+							cout << "Informe a matrícula na qual você deseja remover: ";
+							cin >> matric;
+							remove_enc(matric);
+						}else{
+						if(opc==4){
+							cout << "Informe a matrícula do aluno no qual você deseja ver os dados: ";
+							cin >>matric;
+							mostrard_enc(matric);
+							}else{
+								if(opc==5){
+									cout << "Informe a matrícula que você deseja alterar os dados: ";
+									cin >> matric;
+									alterar_enc(matric);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	return 0;
